@@ -7,6 +7,7 @@ leftWristY = 0;
 rightWristX = 0;
 rightWristY = 0;
 scoreLeftWrist = 0;
+scoreRightWrist = 0;
 
 function preload()
 {
@@ -32,6 +33,19 @@ function draw() {
     stroke("#FF0000");
 
     song_adele_status = song_adele.isPlaying();
+    song_aurora_status = song_aurora.isPlaying();
+
+    if(scoreRightWrist > 0.2){
+        circle(rightWristX,rightWristY,20)
+        song_adele.stop();
+        if(song_aurora_status == false){
+            song_aurora.play();
+        }
+        else{
+            document.getElementById("song_id").innerHTML = "Song Name: Runaway - Aurora";
+        }
+    }
+
 
     if(scoreLeftWrist > 0.2){
         circle(leftWristX,leftWristY,20)
@@ -53,6 +67,9 @@ function gotPoses(results)
 {
     if(results.length > 0)
     {
+        scoreRightWrist = results[0].pose.keypoints[10].score;
+        console.log("scoreRightWrist = " + scoreRightWrist);
+        
         scoreLeftWrist = results[0].pose.keypoints[9].score;
         console.log("scoreLeftWrist = " + scoreLeftWrist);
         
@@ -64,8 +81,4 @@ function gotPoses(results)
         leftWristY = results[0].pose.leftWrist.y;
         console.log("leftWristX = " + leftWristX +" leftWristY = "+ leftWristY)
     }
-}
-
-function isPlaying() {
-
 }
